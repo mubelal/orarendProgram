@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Órarend Kezelő</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #4caf50;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-container {
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-container h3 {
+        color: #4caf50;
+        margin-bottom: 15px;
+      }
+
+      .form-container label {
+        font-weight: 500;
+        margin-right: 10px;
+      }
+
+      .form-container select,
+      .form-container input {
+        padding: 8px 12px;
+        margin: 5px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .form-container button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+        max-width: 150px;
+        margin-top: 10px;
+      }
+
+      .form-container button:hover {
+        background-color: #45a049;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        padding: 15px;
+        text-align: center;
+        border: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      td {
+        background-color: #f9f9f9;
+      }
+
+      .button {
+        padding: 5px 10px;
+        margin-top: 5px;
+        cursor: pointer;
+        border-radius: 4px;
+        border: none;
+        font-size: 14px;
+      }
+
+      .add-btn {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .remove-btn {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .remove-btn:hover {
+        background-color: #c82333;
+      }
+
+      .add-btn:hover {
+        background-color: #218838;
+      }
+
+      @media (max-width: 768px) {
+        table,
+        .form-container {
+          font-size: 14px;
+        }
+
+        .form-container select,
+        .form-container input {
+          width: 100%;
+        }
+
+        .form-container button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Órarend Kezelő</h1>
+
+      <!-- Form az óra felvételéhez -->
+      <div class="form-container">
+        <h3>Óra hozzáadása</h3>
+        <form id="oraForm">
+          <label for="ido">Időpont:</label>
+          <select id="ido" required>
+            <option value="">Válassz időpontot</option>
+            <option value="8:00-9:00">8:00-9:00</option>
+            <option value="9:00-10:00">9:00-10:00</option>
+            <option value="10:00-11:00">10:00-11:00</option>
+          </select>
+          <br /><br />
+
+          <label for="nap">Nap:</label>
+          <select id="nap" required>
+            <option value="">Válassz napot</option>
+            <option value="Hétfő">Hétfő</option>
+            <option value="Kedd">Kedd</option>
+            <option value="Szerda">Szerda</option>
+            <option value="Csütörtök">Csütörtök</option>
+            <option value="Péntek">Péntek</option>
+          </select>
+          <br /><br />
+
+          <label for="tantargy">Tantárgy:</label>
+          <input type="text" id="tantargy" required />
+          <br /><br />
+
+          <button type="submit">Óra hozzáadása</button>
+        </form>
+      </div>
+
+      <!-- Órarend táblázat -->
+      <h3>Órarend</h3>
+      <table id="orarendTable">
+        <thead>
+          <tr>
+            <th>Időpont</th>
+            <th>Hétfő</th>
+            <th>Kedd</th>
+            <th>Szerda</th>
+            <th>Csütörtök</th>
+            <th>Péntek</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>8:00-9:00</td>
+            <td id="h7"></td>
+            <td id="k7"></td>
+            <td id="sz7"></td>
+            <td id="cs7"></td>
+            <td id="p7"></td>
+          </tr>
+          <tr>
+            <td>9:00-10:00</td>
+            <td id="h8"></td>
+            <td id="k8"></td>
+            <td id="sz8"></td>
+            <td id="cs8"></td>
+            <td id="p8"></td>
+          </tr>
+          <tr>
+            <td>10:00-11:00</td>
+            <td id="h9"></td>
+            <td id="k9"></td>
+            <td id="sz9"></td>
+            <td id="cs9"></td>
+            <td id="p9"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      // Óra hozzáadása a táblázathoz
+      document
+        .getElementById("oraForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Ne töltsük újra az oldalt
+
+          // Űrlap értékek lekérése
+          const ido = document.getElementById("ido").value;
+          const nap = document.getElementById("nap").value;
+          const tantargy = document.getElementById("tantargy").value;
+
+          // Ellenőrizzük, hogy minden mező ki van-e töltve
+          if (!ido || !nap || !tantargy) {
+            alert("Kérlek, töltsd ki az összes mezőt!");
+            return;
+          }
+
+          // Megkeressük az oszlop indexét (napot)
+          let oszlopIndex;
+          switch (nap) {
+            case "Hétfő":
+              oszlopIndex = "h";
+              break;
+            case "Kedd":
+              oszlopIndex = "k";
+              break;
+            case "Szerda":
+              oszlopIndex = "sz";
+              break;
+            case "Csütörtök":
+              oszlopIndex = "cs";
+              break;
+            case "Péntek":
+              oszlopIndex = "p";
+              break;
+          }
+
+          // Időpont alapján frissítjük a megfelelő cellát
+          if (ido === "8:00-9:00") {
+            document.getElementById(oszlopIndex + "7").textContent = tantargy;
+          } else if (ido === "9:00-10:00") {
+            document.getElementById(oszlopIndex + "8").textContent = tantargy;
+          } else if (ido === "10:00-11:00") {
+            document.getElementById(oszlopIndex + "9").textContent = tantargy;
+          }
+
+          // Űrlap törlése
+          document.getElementById("oraForm").reset();
+        });
+    </script>
+  </body>
+</html>
